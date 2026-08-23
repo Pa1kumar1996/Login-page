@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f3f3f3;
+    display:flex;
+    justify-content:center;
+    padding:30px;
+}
+
+.container{
+    width:420px;
+    background:#fff;
+    padding:30px;
+}
+
+.red-line{
+    width:22px;
+    height:4px;
+    background:#ff1f2d;
+    margin-bottom:10px;
+}
+
+h1{
+    font-size:42px;
+    color:#111;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#444;
+    font-size:14px;
+    margin-bottom:40px;
+}
+
+.row{
+    display:flex;
+    gap:15px;
+}
+
+.form-group{
+    margin-bottom:25px;
+    width:100%;
+}
+
+input,
+select{
+    width:100%;
+    border:none;
+    border-bottom:1px solid #d4d4d4;
+    padding:10px 0;
+    font-size:15px;
+    outline:none;
+    background:transparent;
+}
+
+.section-title{
+    font-size:22px;
+    font-weight:700;
+    margin:25px 0 15px;
+}
+
+.user-type-title{
+    font-weight:600;
+    margin-bottom:15px;
+}
+
+.radio-wrap{
+    display:flex;
+    gap:25px;
+    margin-bottom:25px;
+}
+
+.radio-wrap label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+input[type="radio"],
+input[type="checkbox"]{
+    width:auto;
+}
+
+.small-label{
+    color:#666;
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.captcha-box{
+    width:150px;
+    height:55px;
+    background:#efefef;
+    border:1px solid #ccc;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:28px;
+    letter-spacing:2px;
+    color:#777;
+    font-weight:bold;
+    user-select:none;
+}
+
+.refresh{
+    color:#ff1f2d;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.checkbox-row{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin:12px 0;
+    font-size:14px;
+}
+
+.policy-link{
+    color:#ff1f2d;
+    text-decoration:none;
+}
+
+.btn{
+    display:block;
+    width:190px;
+    margin:35px auto 0;
+    border:none;
+    background:#ff1f2d;
+    color:#fff;
+    border-radius:30px;
+    padding:14px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:#e21724;
+}
+
+.error{
+    color:red;
+    font-size:13px;
+    margin-top:10px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="red-line"></div>
+
+    <h1>Sign up</h1>
+
+    <p class="subtitle">
+        With one account, you can access all our online services.
+    </p>
+
+    <form id="signupForm">
+
+        <div class="row">
+            <div class="form-group">
+                <input type="text" id="fname" placeholder="First name*" required>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="lname" placeholder="Last name*" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="email" id="email" placeholder="E-mail address*" required>
+        </div>
+
+        <h2 class="section-title">Additional information</h2>
+
+        <div class="user-type-title">
+            Are you a business or private user?
+        </div>
+
+        <div class="radio-wrap">
+            <label>
+                <input type="radio" name="userType" value="Business">
+                Business
+            </label>
+
+            <label>
+                <input type="radio" name="userType" value="Private" checked>
+                Private
+            </label>
+        </div>
+
+        <div class="form-group">
+            <input type="tel" placeholder="Phone number">
+        </div>
+
+        <div class="form-group">
+            <select>
+                <option>Country or region*</option>
+                <option>India</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Germany</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <select>
+                <option>My Main Interest Is</option>
+                <option>Products</option>
+                <option>Solutions</option>
+                <option>Services</option>
+                <option>Events</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+
+            <div class="small-label">
+                CAPTCHA*
+            </div>
+
+            <div class="small-label">
+                Please enter the text below
+            </div>
+
+            <div class="captcha-box" id="captchaText"></div>
+
+            <br>
+
+            <div>
+                Can't read?
+                <span class="refresh" onclick="generateCaptcha()">
+                    Try another.
+                </span>
+            </div>
+
+            <br>
+
+            <input
+                type="text"
+                id="captchaInput"
+                placeholder="Enter CAPTCHA">
+        </div>
+
+        <div class="checkbox-row">
+            <input type="checkbox" id="policy" required>
+            <label for="policy">
+                I have read and agree to
+                #policy*</a>
+            </label>
+        </div>
+
+        <div class="checkbox-row">
+            <input type="checkbox">
+            <label>
+                I consent to receive offers and news on products,
+                services and events from Privacy Policy
+            </label>
+        </div>
+
+        <div id="message" class="error"></div>
+
+        <button class="btn" type="submit">
+            SIGN UP
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+let currentCaptcha = "";
+
+function generateCaptcha() {
+    const chars =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    currentCaptcha = "";
+
+    for(let i=0;i<8;i++){
+        currentCaptcha += chars.charAt(
+            Math.floor(Math.random() * chars.length)
+        );
+    }
+
+    document.getElementById("captchaText").innerText =
+        currentCaptcha;
+}
+
+generateCaptcha();
+
+document
+.getElementById("signupForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const entered =
+        document.getElementById("captchaInput").value;
+
+    const message =
+        document.getElementById("message");
+
+    if(entered !== currentCaptcha){
+        message.innerText =
+            "Invalid CAPTCHA. Please try again.";
+        generateCaptcha();
+        return;
+    }
+
+    message.style.color = "green";
+    message.innerText =
+        "Registration submitted successfully!";
+
+    this.reset();
+    generateCaptcha();
+});
+
+</script>
+
+</body>
+</html>
