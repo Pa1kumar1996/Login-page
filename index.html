@@ -1,109 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Registration Approval Portal</title>
-    <style>
-        body {
-            font-family: Arial;
-            margin: 30px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-
-        th {
-            background: #f0f0f0;
-        }
-
-        button {
-            padding: 6px 12px;
-            margin: 2px;
-            cursor: pointer;
-        }
-
-        .approve {
-            background: green;
-            color: white;
-        }
-
-        .reject {
-            background: red;
-            color: white;
-        }
-    </style>
+<title>Admin Approval</title>
 </head>
 <body>
 
 <h2>Pending Registration Requests</h2>
 
-<table id="requestsTable">
-    <thead>
-        <tr>
-            <th>Request ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Company</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
+<button onclick="loadUsers()">Refresh</button>
 
-    <tbody></tbody>
-</table>
+<div id="users"></div>
 
 <script>
 
 const pendingApi =
-'https://YOUR_DOMAIN/pendingRequests';
+'https://demo-salmon-herring-30982.workflows.okta.com/api/flo/16ef4acafe2a89031b6e49a52a042766/invoke';
 
 const decisionApi =
-'https://demo-salmon-herring-30982.workflows.okta.com/api/flo/1778c929621362f1c945baf048e12276/invoke/decision';
+'DECISION_API_URL';
 
-async function loadRequests() {
+async function loadUsers() {
 
     const response = await fetch(pendingApi);
 
     const data = await response.json();
 
-    const tbody =
-    document.querySelector('#requestsTable tbody');
+    let html = '';
 
-    tbody.innerHTML = '';
+    data.forEach(user => {
 
-    data.forEach(row => {
+        html += `
+        <hr>
 
-        const tr = document.createElement('tr');
+        RequestId: ${user.RequestId}<br>
+        First Name: ${user.FirstName}<br>
+        Last Name: ${user.LastName}<br>
+        Email: ${user.Email}<br>
+        Company: ${user.abb_company_name}<br>
 
-        tr.innerHTML = `
-            <td>${row.RequestId}</td>
-            <td>${row.FirstName}</td>
-            <td>${row.LastName}</td>
-            <td>${row.Email}</td>
-            <td>${row.abb_company_name}</td>
-            <td>${row.Status}</td>
-            <td>
-                <button class="approve"
-                        onclick="approve('${row.RequestId}')">
-                    Approve
-                </button>
+        <button onclick="approve('${user.RequestId}')">
+            Approve
+        </button>
 
-                <button class="reject"
-                        onclick="reject('${row.RequestId}')">
-                    Reject
-                </button>
-            </td>
+        <button onclick="reject('${user.RequestId}')">
+            Reject
+        </button>
         `;
-
-        tbody.appendChild(tr);
     });
+
+    document.getElementById('users').innerHTML = html;
 }
 
 async function approve(requestId) {
@@ -112,9 +57,9 @@ async function approve(requestId) {
         `${decisionApi}?requestId=${requestId}&action=approve`
     );
 
-    alert('User approved');
+    alert('Approved');
 
-    loadRequests();
+    loadUsers();
 }
 
 async function reject(requestId) {
@@ -123,17 +68,19 @@ async function reject(requestId) {
         `${decisionApi}?requestId=${requestId}&action=reject`
     );
 
-    alert('User rejected');
+    alert('Rejected');
 
-    loadRequests();
+    loadUsers();
 }
 
-loadRequests();
+loadUsers();
 
 </script>
 
 </body>
 </html>
+
+
 
 <!--
 <!DOCTYPE html>
