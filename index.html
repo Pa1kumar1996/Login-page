@@ -1,4 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Approval Portal</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+        }
 
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        th {
+            background: #f0f0f0;
+        }
+
+        button {
+            padding: 6px 12px;
+            margin: 2px;
+            cursor: pointer;
+        }
+
+        .approve {
+            background: green;
+            color: white;
+        }
+
+        .reject {
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Pending Registration Requests</h2>
+
+<table id="requestsTable">
+    <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Company</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody></tbody>
+</table>
+
+<script>
+
+const pendingApi =
+'https://YOUR_DOMAIN/pendingRequests';
+
+const decisionApi =
+'https://YOUR_DOMAIN/decision';
+
+async function loadRequests() {
+
+    const response = await fetch(pendingApi);
+
+    const data = await response.json();
+
+    const tbody =
+    document.querySelector('#requestsTable tbody');
+
+    tbody.innerHTML = '';
+
+    data.forEach(row => {
+
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+            <td>${row.RequestId}</td>
+            <td>${row.FirstName}</td>
+            <td>${row.LastName}</td>
+            <td>${row.Email}</td>
+            <td>${row.abb_company_name}</td>
+            <td>${row.Status}</td>
+            <td>
+                <button class="approve"
+                        onclick="approve('${row.RequestId}')">
+                    Approve
+                </button>
+
+                <button class="reject"
+                        onclick="reject('${row.RequestId}')">
+                    Reject
+                </button>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+async function approve(requestId) {
+
+    await fetch(
+        `${decisionApi}?requestId=${requestId}&action=approve`
+    );
+
+    alert('User approved');
+
+    loadRequests();
+}
+
+async function reject(requestId) {
+
+    await fetch(
+        `${decisionApi}?requestId=${requestId}&action=reject`
+    );
+
+    alert('User rejected');
+
+    loadRequests();
+}
+
+loadRequests();
+
+</script>
+
+</body>
+</html>
+
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -338,3 +475,5 @@ document
 
 </body>
 </html>
+
+-->
